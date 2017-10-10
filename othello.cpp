@@ -18,10 +18,10 @@ void hyouzi () {
                     cout << " " << "|";
                     break;
                 case 1:
-                    cout << "○" << "|";
+                    cout << "0" << "|";
                     break;
                 case 2:
-                    cout << "●" << "|";
+                    cout << "@" << "|";
                     break;
             }
         }
