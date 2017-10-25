@@ -66,7 +66,9 @@ int judge (int judge_t,int judge_y){
         return 0;
     }
     LOOP(judge_i,3){
-        LOOP(judge_j,3)
+        LOOP(judge_j,3){
+            
+        }
     }
 }
 
