@@ -9,19 +9,23 @@ bool player = true;//プレイヤーは先手か
 int board[8][8];//盤面
 char name[32];//プレイヤーの名前
 
-void title (){//タイトル表示
+void title (){
+//タイトル表示
     cout << "\n"
-    << "    OOOOO TTTTT H   H EEEEE L     L     OOOOO   GGGGG   A   M   M EEEEE\n"
-    << "    O   O   T   H   H E     L     L     O   O   G      A A  MM MM E    \n"  
-    << "    O   O   T   HHHHH EEEEE L     L     O   O   G GGG A   A M M M EEEEE\n"  
-    << "    O   O   T   H   H E     L     L     O   O   G   G AAAAA M   M E    \n"  
-    << "    OOOOO   T   H   H EEEEE LLLLL LLLLL OOOOO   GGGGG A   A M   M EEEEE\n\n\n\n"
+    << "  #######################################################################\n"
+    << "  # OOOOO TTTTT H   H EEEEE L     L     OOOOO   GGGGG   A   M   M EEEEE #\n"
+    << "  # O   O   T   H   H E     L     L     O   O   G      A A  MM MM E     #\n"  
+    << "  # O   O   T   HHHHH EEEEE L     L     O   O   G GGG A   A M M M EEEEE #\n"  
+    << "  # O   O   T   H   H E     L     L     O   O   G   G AAAAA M   M E     #\n"  
+    << "  # OOOOO   T   H   H EEEEE LLLLL LLLLL OOOOO   GGGGG A   A M   M EEEEE #\n"
+    << "  #######################################################################\n\n"
     << "    名前を入れてください(<32 words)" << endl;
     cin >> name;
-    cout << "ようこそ" << name << "\n\n\n";    
+    cout << "    ようこそ" << name << "\n\n\n";    
 }
 
-void b_reset(){//盤面の初期化
+void b_reset(){
+//盤面の初期化
     int b_i,b_j;
     LOOP(b_i,8){
         LOOP(b_j,8){
@@ -33,7 +37,8 @@ void b_reset(){//盤面の初期化
 }
 
 
-void hyouzi () {//盤面表示
+void hyouzi () 
+//盤面表示
     int hyouzi_i,hyouzi_j;
     cout << "    1 2 3 4 5 6 7 8" <<endl;
     cout << "   +-+-+-+-+-+-+-+-+" <<endl;
@@ -59,32 +64,74 @@ void hyouzi () {//盤面表示
     cout << "\n    >>" <<((first)? "0" : "@" ) << "の番です。" << "<<\n" <<endl;
 }
 
+int judge_dir(int jd_t,int jd_y,int d_t,int d_y){
+//置けるかどうかの判断
+    jd_t += d_t;
+    jd_y += d_y;
+    if ( jd_t < 0 || jd_t >7 || jd_y < 0 || jd_y >7 || board[jd_t][jd_y] == 0 ){
+        return 1;
+    }
+    if (first){
+        if(board[jd_t][jd_y] == ((first)? 1:2)){return 1;}
+    }
+    while(1){
+        jd_t += d_t;
+        jd_y += d_y;
+        if ( jd_t < 0 || jd_t >7 || jd_y < 0 || jd_y >7 || board[jd_t][jd_y] == 0 ){
+            return 1;
+        }
+        if (board[jd_t][jd_y] == ((first)? 1:2)){return 0;}
+    }
+}
+
 int judge (int judge_t,int judge_y){
+//おけるかどうかのチェック全般
+    bool judge_t = true;
     int judge_i,judge_j;
     if(judge_t < 1 || judge_t > 8 || judge_y < 1 || judge_y >8){
         cout << "座標は1~8で指定してください" << endl;
         return 0;
     }
+    if ( !board[judge_t][judge_y] == 0){
+        cout << "既に石があります" << endl;
+        return 0;
+    }
     LOOP(judge_i,3){
         LOOP(judge_j,3){
-            
+            if(judge_dir(judge_t,judge_y))
         }
     }
+        return 1;
 }
 
-void input (){//入力と置けるかどうかの判断
+void input (){
+//入力と配置と手番処理
     int input_t,input_y;
     do{
         cout << "石を置く座標を入力してください(1~8)" << endl;
-        cin >> tate >> yoko;
-    }while( judge(tate,yoko) == 0);
+        cin >> input_t >> input_y;
+    }while( judge(input_t,input_y) == 0);
+    if(first){
+        board[input_t -1][input_y -1] = 1;
+        first = false;
+    }else{
+        board[input_t -1][input_y -1] = 2;
+        first = true;
+    }
+}
 
+int cheack(){
+//終了判断
+    return 1;
+}
 
 int main (){
     title();
     b_reset();
-    hyouzi ();
-    return 0;
+    while ( cheack() ){
+        hyouzi ();
+        input ();
+    }
+        return 0;
 }
-
 
