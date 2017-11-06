@@ -12,13 +12,13 @@ char name[32];//プレイヤーの名前
 void title (){
 //タイトル表示
     cout << "\n"
-    << "  #######################################################################\n"
-    << "  # OOOOO TTTTT H   H EEEEE L     L     OOOOO   GGGGG   A   M   M EEEEE #\n"
-    << "  # O   O   T   H   H E     L     L     O   O   G      A A  MM MM E     #\n"  
-    << "  # O   O   T   HHHHH EEEEE L     L     O   O   G GGG A   A M M M EEEEE #\n"  
-    << "  # O   O   T   H   H E     L     L     O   O   G   G AAAAA M   M E     #\n"  
-    << "  # OOOOO   T   H   H EEEEE LLLLL LLLLL OOOOO   GGGGG A   A M   M EEEEE #\n"
-    << "  #######################################################################\n\n"
+    << "  ######################################################################\n"
+    << "  # OOOOO TTTTT H   H EEEEE L     L     OOOOO  GGGGG   A   M   M EEEEE #\n"
+    << "  # O   O   T   H   H E     L     L     O   O  G      A A  MM MM E     #\n"  
+    << "  # O   O   T   HHHHH EEEEE L     L     O   O  G GGG A   A M M M EEEEE #\n"  
+    << "  # O   O   T   H   H E     L     L     O   O  G   G AAAAA M   M E     #\n"  
+    << "  # OOOOO   T   H   H EEEEE LLLLL LLLLL OOOOO  GGGGG A   A M   M EEEEE #\n"
+    << "  ######################################################################\n\n"
     << "    名前を入れてください(<32 words)" << endl;
     cin >> name;
     cout << "    ようこそ" << name << "\n\n\n";    
@@ -37,7 +37,7 @@ void b_reset(){
 }
 
 
-void hyouzi () 
+void hyouzi () {
 //盤面表示
     int hyouzi_i,hyouzi_j;
     cout << "    1 2 3 4 5 6 7 8" <<endl;
@@ -69,26 +69,36 @@ int judge_dir(int jd_t,int jd_y,int d_t,int d_y){
     jd_t += d_t;
     jd_y += d_y;
     if ( jd_t < 0 || jd_t >7 || jd_y < 0 || jd_y >7 || board[jd_t][jd_y] == 0 ){
-        return 1;
+        return 0;
     }
     if (first){
-        if(board[jd_t][jd_y] == ((first)? 1:2)){return 1;}
+        if(board[jd_t][jd_y] == ((first)? 1:2)){return 0;}
     }
     while(1){
         jd_t += d_t;
         jd_y += d_y;
         if ( jd_t < 0 || jd_t >7 || jd_y < 0 || jd_y >7 || board[jd_t][jd_y] == 0 ){
-            return 1;
+            return 0;
         }
-        if (board[jd_t][jd_y] == ((first)? 1:2)){return 0;}
+        if (board[jd_t][jd_y] == ((first)? 1:2)){
+        return 1;}
+    }
+}
+
+int turn (int turn_t,int turn_y,int turn_dt,int turn_dy){
+    while(1){
+        turn_t += turn_dt;
+        turn_y += turn_dy;
+        if(board[turn_t][turn_y] == ((first)? 1:2)){return 0;}
+        board[turn_t][turn_y] = ((first)? 1:2);
     }
 }
 
 int judge (int judge_t,int judge_y){
 //おけるかどうかのチェック全般
-    bool judge_t = true;
+    bool judge_b = false;
     int judge_i,judge_j;
-    if(judge_t < 1 || judge_t > 8 || judge_y < 1 || judge_y >8){
+    if(judge_t < 0 || judge_t > 7 || judge_y <0 || judge_y >7){
         cout << "座標は1~8で指定してください" << endl;
         return 0;
     }
@@ -98,10 +108,17 @@ int judge (int judge_t,int judge_y){
     }
     LOOP(judge_i,3){
         LOOP(judge_j,3){
-            if(judge_dir(judge_t,judge_y))
+            if(judge_dir(judge_t, judge_y, judge_i-1, judge_j-1)){
+                turn(judge_t,judge_y,judge_i-1,judge_j-1);
+                judge_b = true;
+            }
         }
     }
-        return 1;
+    if(judge_b){return 1;}
+    else{
+        cout << "その場所には置けません" << endl;
+        return 0;
+    }
 }
 
 void input (){
@@ -110,14 +127,11 @@ void input (){
     do{
         cout << "石を置く座標を入力してください(1~8)" << endl;
         cin >> input_t >> input_y;
+        input_t --;
+        input_y --;
     }while( judge(input_t,input_y) == 0);
-    if(first){
-        board[input_t -1][input_y -1] = 1;
-        first = false;
-    }else{
-        board[input_t -1][input_y -1] = 2;
-        first = true;
-    }
+    board[input_t][input_y] = ((first)? 1:2);
+    first = !first;
 }
 
 int cheack(){
@@ -134,4 +148,5 @@ int main (){
     }
         return 0;
 }
+
 
