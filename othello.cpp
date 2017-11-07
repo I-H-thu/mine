@@ -65,7 +65,7 @@ void hyouzi () {
 }
 
 int judge_dir(int jd_t,int jd_y,int d_t,int d_y){
-//置けるかどうかの判断
+//置けるかどうかの判断(一方向のみ)
     jd_t += d_t;
     jd_y += d_y;
     if ( jd_t < 0 || jd_t >7 || jd_y < 0 || jd_y >7 || board[jd_t][jd_y] == 0 ){
@@ -86,6 +86,7 @@ int judge_dir(int jd_t,int jd_y,int d_t,int d_y){
 }
 
 int turn (int turn_t,int turn_y,int turn_dt,int turn_dy){
+//裏返し処理（一方向）
     while(1){
         turn_t += turn_dt;
         turn_y += turn_dy;
@@ -127,15 +128,15 @@ void input (){
     do{
         cout << "石を置く座標を入力してください(1~8)" << endl;
         cin >> input_t >> input_y;
-        input_t --;
+        input_t --;//配列座標に変換
         input_y --;
     }while( judge(input_t,input_y) == 0);
     board[input_t][input_y] = ((first)? 1:2);
-    first = !first;
+    first = !first;//手番入れ替え
 }
 
 int cheack(){
-//終了判断
+//終了判断(未実装)
     return 1;
 }
 
@@ -148,5 +149,4 @@ int main (){
     }
         return 0;
 }
-
 
