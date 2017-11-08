@@ -138,7 +138,7 @@ void input (){
 }
 
 int cheack(){
-//終了判断
+//終了判断(2人がパスする状況になったら)
     int cheack_i,cheack_j,cheack_t,cheack_y;
     LOOP(cheack_i,8){
         LOOP(cheack_j,8){
@@ -151,7 +151,10 @@ int cheack(){
             }
         }
     }
-    return 0;
+    if(pass){return 0;}
+    pass = true;
+    first != first;
+    return 1;
 }
 
 void ending (){
@@ -163,12 +166,10 @@ void ending (){
             switch(board[ending_i][ending_j]){
                 case 1:
                     ending_white ++;
-                    cout << ending_i << ending_j << ending_white <<endl;
                     break;
                 
                 case 2:
                     ending_black ++;
-                    cout << ending_i << ending_j << ending_black <<endl;
                     break;
                 
                 default:
@@ -193,5 +194,4 @@ int main (){
     ending();
     return 0;
 }
-
 
