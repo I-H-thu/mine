@@ -96,7 +96,7 @@ int turn (int turn_t,int turn_y,int turn_dt,int turn_dy){
 }
 
 int judge (int judge_t,int judge_y){
-//おけるかどうかのチェック全般
+//おけるかどうかのチェック全般&裏返し
     bool judge_b = false;
     int judge_i,judge_j;
     if(judge_t < 0 || judge_t > 7 || judge_y <0 || judge_y >7){
@@ -130,14 +130,48 @@ void input (){
         cin >> input_t >> input_y;
         input_t --;//配列座標に変換
         input_y --;
-    }while( judge(input_t,input_y) == 0);
+    }while(judge(input_t,input_y) == 0);
     board[input_t][input_y] = ((first)? 1:2);
     first = !first;//手番入れ替え
 }
 
 int cheack(){
-//終了判断(未実装)
-    return 1;
+//終了判断
+    int cheack_i,cheack_j,cheack_t,cheack_y;
+    LOOP(cheack_i,8){
+        LOOP(cheack_j,8){
+            if(board[cheack_i][cheack_j]==0){
+                LOOP(cheack_t,3){
+                    LOOP(cheack_y,3){
+                        if(judge_dir(cheack_i,cheack_j,cheack_t-1,cheack_y-1)){return 1;}
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+void ending (){
+//結果表示
+    int ending_i,ending_j,ending_white,ending_black;
+    ending_i = ending_j =0;
+    LOOP(ending_i,8){
+        LOOP(ending_j,8){
+            switch(board[ending_i][ending_j]){
+                case 1:
+                    ending_white ++;
+                    break;
+                case 2:
+                    ending_black ++;
+                    break;
+            }
+        }
+    }
+    cout << "0:" << ending_white <<"個\n"
+         << "@:" << ending_black <<"個\n\n";
+    if (ending_white == ending_black){cout << "引き分けです\n";}
+    else{cout << ((ending_white > ending_black)? "0":"@") << "の勝ちです\n";}
 }
 
 int main (){
@@ -147,6 +181,7 @@ int main (){
         hyouzi ();
         input ();
     }
-        return 0;
+    ending();
+    return 0;
 }
 
