@@ -62,7 +62,6 @@ void hyouzi () {
         cout << "\n"
                <<"   +-+-+-+-+-+-+-+-+" <<endl;
     }
-    cout << "\n    >>" <<((first)? "0" : "@" ) << "の番です。" << "<<\n" <<endl;
 }
 
 int judge_dir(int jd_t,int jd_y,int d_t,int d_y){
@@ -126,6 +125,7 @@ int judge (int judge_t,int judge_y){
 void input (){
 //入力と配置と手番処理
     int input_t,input_y;
+    cout << "\n    >>" <<((first)? "0" : "@" ) << "の番です。" << "<<\n" <<endl;
     do{
         cout << "石を置く座標を入力してください(1~8)" << endl;
         cin >> input_t >> input_y;
@@ -188,10 +188,12 @@ int main (){
     title();
     b_reset();
     while ( cheack() ){
+        if(cheack() == 0) {break;}
         hyouzi ();
         input ();
     }
     ending();
     return 0;
 }
+
 
