@@ -1,2 +1,3 @@
 https://qiita.com/JunShimura/items/cbb0db8087a5cc75735e
 https://github.com/unity3d-jp/FirstTutorial
+https://unity3d.com/jp/learn/tutorials/projects/hajiuni-jp
