@@ -5,18 +5,46 @@ using namespace std;
 #define REPR(i,j) for(int i=j;i>=0;i--)
 #define FOR(i,j,k) for(int i=j;i<k;i++)
 
-const int N = 3;//n元連立方程式
-double a[N][N]={
-                   {3.0, 1.0, 2.0},
-                   {5.0, 1.0, 3.0},
-                   {4.0, 2.0, 1.0}
-                };
-double b[N]={13.0, 20.0, 13.0};//2.1.3
 
 int main (){
-   double sum = 0.0;
+    double sum, tmp, absmax;
+    int N ,imax;
+//入力
+    cin >> N;
+    double a[N][N], b[N];
+    REP(i,N){
+        REP(j,N){
+            cin >> a[i][j];
+       }
+    }
+   REP(i,N){
+       cin >> b[i];
+    }
+//入力終了
+
 //前進消去
     REP(k,N-1){
+  //部分ピポット選択
+        imax = k;
+        absmax = fabs(a[k][k]);
+        FOR(i,k+1,N){
+            if( fabs(a[i][k]) > absmax ){
+                absmax = fabs(a[i][k]);
+                imax = i;
+            }
+        }
+    if(imax != k){
+        FOR(j,k,N){
+            tmp = a[k][j];
+            a[k][j] = a[imax][j];
+            a[imax][j] = tmp;
+        }
+        tmp = b[k];
+        b[k] = b[imax];
+        b[imax] = tmp;
+    }
+  //部分ピポット選択終了
+
         FOR(i,k+1,N){
             FOR(j,k+1,N){
                 a[i][j] = a[i][j]-a[k][j]*a[i][k]/a[k][k];
@@ -24,6 +52,7 @@ int main (){
             b[i] = b[i]-b[k]*a[i][k]/a[k][k];
         }
     }
+
 //後退代入
     REPR(i,N-1){
         sum = b[i];
@@ -34,7 +63,7 @@ int main (){
     }
 //解の表示
     REP(i,N){
-        cout << setprecision(17) << b[i] << endl;
+        cout << setprecision(16) << b[i] << endl;
     }
     return 0;
 }
