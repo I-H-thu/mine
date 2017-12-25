@@ -11,35 +11,16 @@ int main (){
     int N ,imax;
 //入力
     cin >> N;
-    double a[N][N], b[N];
+    double a[N][N];
     REP(i,N){
         REP(j,N){
             cin >> a[i][j];
        }
     }
-   REP(i,N){
-       cin >> b[i];
-    }
 //入力終了
-
-//スケーリング
-    REP(i,N){//行
-        double max = 0.0;
-        REP(j,N){//列
-           if( fabs(a[i][j]) > max){//絶対値の最大値を求める
-               max = fabs(a[i][j]);
-           }
-        }
-        REP(j,N){//最大値で行全部割る
-            a[i][j] /= max;
-        }
-        b[i] /= max;//答えも割る
-    }
-//スケーリング終了
 
 //前進消去
     REP(k,N-1){
-
   //部分ピポット選択
         imax = k;
         absmax = fabs(a[k][k]);
@@ -55,33 +36,23 @@ int main (){
             a[k][j] = a[imax][j];
             a[imax][j] = tmp;
         }
-        tmp = b[k];
-        b[k] = b[imax];
-        b[imax] = tmp;
     }
   //部分ピポット選択終了
-
         FOR(i,k+1,N){
             FOR(j,k+1,N){
                 a[i][j] = a[i][j]-a[k][j]*a[i][k]/a[k][k];
             }
-            b[i] = b[i]-b[k]*a[i][k]/a[k][k];
-            a[i][k] = 0.0;
+             a[i][k] = 0.0;
         }
     }
 //前進消去終了
 
-//後退代入
-    REPR(i,N-1){
-        sum = b[i];
-        FOR(j,i+1,N){
-            sum = sum-b[j]*a[i][j];
-        }
-        b[i] = sum/a[i][i];
-    }
-//解の表示
+//行列式の計算
+    double answer = 1.0;
     REP(i,N){
-        cout << setprecision(16) << b[i] << endl;
+        answer *= a[i][i];
     }
+//行列式終了
+    cout << answer << endl;
     return 0;
 }
