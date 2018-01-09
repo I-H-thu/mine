@@ -10,13 +10,16 @@ int main (){
     double sum, tmp, absmax;
     int N ,imax;
 //入力
+    cout << "N?:" ;
     cin >> N;
     double a[N][N], b[N];
     REP(i,N){
+    cout << i+1 <<"  " ;
         REP(j,N){
             cin >> a[i][j];
        }
     }
+    cout << "answer?:  ";
    REP(i,N){
        cin >> b[i];
     }
