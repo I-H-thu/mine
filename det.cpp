@@ -8,7 +8,7 @@ using namespace std;
 
 int main (){
     double sum, tmp, absmax;
-    int N ,imax;
+    int N ,imax,change;
 //入力
     cin >> N;
     double a[N][N];
@@ -18,6 +18,8 @@ int main (){
        }
     }
 //入力終了
+
+    change = 0;
 
 //前進消去
     REP(k,N-1){
@@ -31,6 +33,7 @@ int main (){
             }
         }
     if(imax != k){
+        change ++;
         FOR(j,k,N){
             tmp = a[k][j];
             a[k][j] = a[imax][j];
@@ -52,6 +55,8 @@ int main (){
     REP(i,N){
         answer *= a[i][i];
     }
+    if(change % 2){answer *= -1;}
+    else {}
 //行列式終了
     cout << answer << endl;
     return 0;
