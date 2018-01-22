@@ -1,13 +1,16 @@
 #include <iostream>
+using namespace std;
 
 #define LOOP(val,times) for(val=0;val<(times);val++)
-using namespace std;
+
+#define LIMIT 8
+
 
 //グローバル変数置き場
 bool first = true;//先手の番か
 bool player = true;//プレイヤーは先手か
 bool pass = false;//直前にパスしたか
-int board[8][8];//盤面
+int board[LIMIT][LIMIT];//盤面
 char name[32];//プレイヤーの名前
 
 void title (){
@@ -28,8 +31,8 @@ void title (){
 void b_reset(){
 //盤面の初期化
     int b_i,b_j;
-    LOOP(b_i,8){
-        LOOP(b_j,8){
+    LOOP(b_i,LIMIT){
+        LOOP(b_j,LIMIT){
             board[b_i][b_j] = 0;
         }
     }
@@ -43,18 +46,18 @@ void hyouzi () {
     int hyouzi_i,hyouzi_j;
     cout << "    1 2 3 4 5 6 7 8" <<endl;
     cout << "   +-+-+-+-+-+-+-+-+" <<endl;
-    LOOP(hyouzi_i,8){
+    LOOP(hyouzi_i,LIMIT){
         cout << "  " << hyouzi_i+1 << "|";
-        LOOP(hyouzi_j,8){
+        LOOP(hyouzi_j,LIMIT){
             switch(board[hyouzi_i][hyouzi_j]){
                 case 0:
                     cout << " " ;
                     break;
                 case 1:
-                    cout << "0" ;
+                    cout << "○" ;
                     break;
                 case 2:
-                    cout << "@" ;
+                    cout << "●" ;
                     break;
             }
             cout << "|";
@@ -66,6 +69,7 @@ void hyouzi () {
 
 int judge_dir(int jd_t,int jd_y,int d_t,int d_y){
 //置けるかどうかの判断(一方向のみ)
+//置けるとき1,置けないとき0
     jd_t += d_t;
     jd_y += d_y;
     if ( jd_t < 0 || jd_t >7 || jd_y < 0 || jd_y >7 || board[jd_t][jd_y] == 0 ){
@@ -195,5 +199,4 @@ int main (){
     ending();
     return 0;
 }
-
 

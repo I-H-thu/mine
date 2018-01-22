@@ -5,6 +5,8 @@ using namespace std;
 #define REPR(i,j) for(int i=j;i>=0;i--)
 #define FOR(i,j,k) for(int i=j;i<k;i++)
 
+
+
 double f(double x){
     return pow(x,5)-5*x*x*x+4*x;
 }
@@ -17,8 +19,8 @@ int main(){
     double x,y;
     int i, n = 30;
     double epsilon = pow(2.0,-52);
-    cin >> x;    
-    for(i = 0;i < n;i++){
+    cin >> x;
+    REP(i,n){
         y = f(x)/df(x);
         if(fabs(y) < epsilon){
             break;
