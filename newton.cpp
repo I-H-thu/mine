@@ -5,6 +5,8 @@ using namespace std;
 #define REPR(i,j) for(int i=j;i>=0;i--)
 #define FOR(i,j,k) for(int i=j;i<k;i++)
 
+#define LIMIT 100000000 //newton法の繰り返し最大回数
+
 
 
 double f(double x){
@@ -17,16 +19,18 @@ double df(double x){
 
 int main(){
     double x,y;
-    int i, n = 30;
-    double epsilon = pow(2.0,-52);
+    long int i, n = LIMIT;
+    const double epsilon = pow(2.0,-52);
+    cout << "初期値:";
     cin >> x;
-    REP(i,n){
+    for (i=0;i<n;i++){
         y = f(x)/df(x);
         if(fabs(y) < epsilon){
+            cout << i << "\n";
             break;
         }
         x = x-y;
     }
-    cout << "answer is " << x <<"\nthe number of loop is " << i <<"\n";
+    cout << "answer is " << setprecision(16) << x <<"\nthe number of loop is " << i <<"\n";
     return 0;
 }

@@ -23,7 +23,7 @@ void search(double a,double b){
                 a = c;
             }
         }
-        cout << "the answer is " << (a+b)/2.0 << "\n";
+        cout << "the answer is " << setprecision(16) <<(a+b)/2.0 << "\n";
         found = true;
     }else{
     }
