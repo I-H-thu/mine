@@ -5,7 +5,7 @@ using namespace std;
 #define REPR(i,j) for(int i=j;i>=0;i--)
 #define FOR(i,j,k) for(int i=j;i<k;i++)
 
-#define LIMIT 10000000 //newton法の繰り返し最大回数
+#define LIMIT 10000 //newton法の繰り返し最大回数
 
 vector<double> ans;
 
@@ -20,24 +20,23 @@ double f(double x){
 
 double df(double x){
     //return 5*pow(x,4)-5*3*x*x+4;
-    //return 1 - 1/x*log(10);
+    //return 1 - 1/(x*log(10));
     return cos(x);
 }
 
 void search(double a,double b){
     double c;
-    if( f(a)* f(b) < 0.0){
+    if( f(a)* f(b) <= 0.0){
         while( fabs(a - b) > alpha){
             c = (a+b)/2.0;
             if(f(a)*f(c) < 0.0){
-                b = c;  
+                b = c;
             }else{
                 a = c;
             }
         }
         ans.push_back((a+b)/2.0);
         found = true;
-    }else{
     }
 }
 
@@ -53,8 +52,13 @@ int newton(double x){
         }
         x = x-y;
     }
-    cout << "answer is " << setprecision(16) << x <<"\nthe number of loop is " << i <<"\n";
-    return 0;
+    if(!found && i == LIMIT){
+        cout << "解が見つかりません\n";
+        return 1;
+    }else{
+        cout << "解は" << setprecision(16) << x <<"です    繰り返し回数は" << i <<"回です\n";
+        return 0;
+    }
 }
 
 int main (){
@@ -67,11 +71,12 @@ int main (){
         search(a+h*i, a+h*(i+1));
     }
     if(! found){
-        cout << "answer is not found\n";
+        cout <<"二分法で解が見つかりませんでした。初期値0でニュートン法を実行します。\n";
+        newton(0.);
     }
     REP(i,ans.size()){
-        cout << "初期値:" << setprecision(16) << ans[i] <<"\n";
         newton(ans[i]);
+        cout << "    初期値:" << setprecision(16) << ans[i] <<"\n";
     }
     return 0;
 }

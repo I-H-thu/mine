@@ -10,11 +10,13 @@ const double alpha = pow(2.0,-20);
 
 double f(double x){
     return pow(x,5)-5*x*x*x+4*x;
+    //return x-log10(x)-1;
+    //return sin(x) ;
 }
 
 void search(double a,double b){
     double c;
-    if( f(a)* f(b) < 0.0){
+    if( f(a)* f(b) <= 0.0){
         while( fabs(a - b) > alpha){
             c = (a+b)/2.0;
             if(f(a)*f(c) < 0.0){
@@ -23,7 +25,7 @@ void search(double a,double b){
                 a = c;
             }
         }
-        cout << "the answer is " << setprecision(16) <<(a+b)/2.0 << "\n";
+        cout << "解は" << setprecision(16) <<(a+b)/2.0 << "です\n";
         found = true;
     }else{
     }
@@ -39,7 +41,7 @@ int main (){
         search(a+h*i, a+h*(i+1));
     }
     if(! found){
-        cout << "answer is not found\n";
+        cout << "解が見つかりません\n";
     }
     return 0;
 }
