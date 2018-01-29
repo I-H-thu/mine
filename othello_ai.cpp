@@ -7,12 +7,11 @@ using namespace std;
 
 
 //グローバル変数置き場
-bool first = true;//先手の番か
-bool player = true;//プレイヤーは先手か
+bool turn_w = false;//白の番か
 bool pass = false;//直前にパスしたか
-bool AI = false; //AIは有効か
 int board[LIMIT][LIMIT];//盤面
-char name[32];//プレイヤーの名前
+string name_w;//プレイヤーの名前
+string name_b;
 
 void title (){
 //タイトル表示
@@ -24,9 +23,11 @@ void title (){
     << "  # O   O   T   H   H E     L     L     O   O  G   G AAAAA M   M E     #\n"  
     << "  # OOOOO   T   H   H EEEEE LLLLL LLLLL OOOOO  GGGGG A   A M   M EEEEE #\n"
     << "  ######################################################################\n\n"
-    << "    名前を入れてください(<32 words)" << "\n";
-    cin >> name;
-    cout << "    ようこそ" << name << "\n\n\n";    
+    << "    先手(黒)の名前を入れてください:" ;
+    cin >> name_b;
+    cout << "    ようこそ" << name_b << "\n\n"
+     << "    後手(白)の名前を入れてください:";
+     cin >> name_w;  
 }
 
 void b_reset(){
@@ -76,8 +77,8 @@ int judge_dir(int jd_t,int jd_y,int d_t,int d_y){
     if ( jd_t < 0 || jd_t >7 || jd_y < 0 || jd_y >7 || board[jd_t][jd_y] == 0 ){
         return 0;
     }
-    if (first){
-        if(board[jd_t][jd_y] == ((first)? 1:2)){return 0;}
+    if (turn_w){
+        if(board[jd_t][jd_y] == ((turn_w)? 1:2)){return 0;}
     }
     while(1){
         jd_t += d_t;
@@ -85,7 +86,7 @@ int judge_dir(int jd_t,int jd_y,int d_t,int d_y){
         if ( jd_t < 0 || jd_t >7 || jd_y < 0 || jd_y >7 || board[jd_t][jd_y] == 0 ){
             return 0;
         }
-        if (board[jd_t][jd_y] == ((first)? 1:2)){
+        if (board[jd_t][jd_y] == ((turn_w)? 1:2)){
         return 1;}
     }
 }
@@ -95,8 +96,8 @@ int turn (int turn_t,int turn_y,int turn_dt,int turn_dy){
     while(1){
         turn_t += turn_dt;
         turn_y += turn_dy;
-        if(board[turn_t][turn_y] == ((first)? 1:2)){return 0;}
-        board[turn_t][turn_y] = ((first)? 1:2);
+        if(board[turn_t][turn_y] == ((turn_w)? 1:2)){return 0;}
+        board[turn_t][turn_y] = ((turn_w)? 1:2);
     }
 }
 
@@ -131,7 +132,7 @@ void input (){
 //入力と配置と手番処理
     int input_t,input_y;
     char cinput_t,cinput_y;
-    cout << "\n    >>" <<((first)? "0" : "@" ) << "の番です。" << "<<\n" <<"\n";
+    cout << "\n    >>" <<((turn_w)? "○ :" : "● :" ) << ((turn_w)? name_w : name_b ) << " の番です。" << "<<\n" <<"\n";
     do{
         cout << "石を置く座標を入力してください 例 4d" << "\n";
         cin >> cinput_t >> cinput_y;
@@ -140,8 +141,8 @@ void input (){
         input_t --;//配列座標に変換
         input_y --;
     }while(judge(input_t,input_y) == 0);
-    board[input_t][input_y] = ((first)? 1:2);
-    first = !first;//手番入れ替え
+    board[input_t][input_y] = ((turn_w)? 1:2);
+    turn_w = !turn_w;//手番入れ替え
     pass = false;//パスしてないよ
 }
 
@@ -161,7 +162,7 @@ int cheack(){
     }
     if(pass){return 0;}
     pass = true;
-    first != first;
+    turn_w != turn_w;
     return 1;
 }
 
@@ -186,10 +187,10 @@ void ending (){
         }
     }
     hyouzi();
-    cout << "0:" << ending_white <<"個\n"
-         << "@:" << ending_black <<"個\n\n";
+    cout << "○ :" << ending_white <<"個\n"
+         << "● :" << ending_black <<"個\n\n";
     if (ending_white == ending_black){cout << "引き分けです\n";}
-    else{cout << ((ending_white > ending_black)? "0":"@") << "の勝ちです\n";}
+    else{cout << ((ending_white > ending_black)? "○ :":"● :") << ((ending_white > ending_black)? name_w : name_b )  << "の勝ちです\n";}
 }
 
 int main (){
